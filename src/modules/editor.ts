@@ -1,3 +1,4 @@
+import { printCodeWithLines } from "./lines.js";
 import { centeredText } from "./tools.js";
 
 export function runEditorWithoutFile() {
@@ -5,5 +6,5 @@ export function runEditorWithoutFile() {
 }
 
 export function runEditorWithFile() {
-    
+    printCodeWithLines();
 }

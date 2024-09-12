@@ -2,7 +2,6 @@ import fs from 'fs';
 import { runEditorWithFile, runEditorWithoutFile } from './modules/editor.js';
 import { exitWithEsc } from './modules/tools.js';
 import { Highlight } from './modules/highlight.js';
-import { printCodeWithLines } from './modules/lines.js';
 
 const filePath = process.argv[2];
 
@@ -22,7 +21,7 @@ function checkFile() {
   }
 }
 
-//checkFile();
+checkFile();
 
 const highlight = new Highlight();
 
@@ -40,6 +39,3 @@ console.log(highlight.HighlightCode(`
 }
 
 //testHighlight();
-
-
-printCodeWithLines();
