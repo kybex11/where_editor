@@ -25,3 +25,12 @@ export function centeredText(text: string): void {
     process.stdout.write(`\x1B[${centerY};${centerX}f`);
     process.stdout.write(text + '\n');
 }
+
+export function exitWithEsc() {
+    process.stdin.setRawMode(true);
+    process.stdin.on('data', (data) => {
+        if (data.toString() === '\u001B') { //esc key
+            exit();
+        }
+    })
+}

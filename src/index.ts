@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { runEditorWithFile, runEditorWithoutFile } from './modules/editor.js';
+import { exitWithEsc } from './modules/tools.js';
 
 const filePath = process.argv[2];
 
@@ -15,6 +16,7 @@ function checkFile() {
     
   } else {
     runEditorWithoutFile();
+    exitWithEsc();
   }
 }
 
