@@ -1,14 +1,8 @@
 import fs from 'fs';
+import { runEditorWithFile, runEditorWithoutFile } from './modules/editor.js';
 
 const filePath = process.argv[2];
 
-function runEditorWithoutFile() {
-
-}
-
-function runEditorWithFile() {
-  
-}
 
 function checkFile() {
   if (filePath) {
@@ -16,7 +10,7 @@ function checkFile() {
     //if (fileContent) {
       //console.log(`File contents: ${fileContent}`);
     //}
-    
+
     runEditorWithFile();
     
   } else {
