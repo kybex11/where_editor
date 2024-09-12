@@ -1,7 +1,13 @@
 import chalk from "chalk";
 
 export class Highlight {
-    Blue(content: any) {
-        return chalk.blue(content);
+    HighlightOperators(content: any) {
+        const operators = ['{', '}', '[', ']', '+', '-', '&', '*', '!', '?', '=', '(', ')', '#', '%', ';', ':', '|'];
+
+        const highlightedText = content.replace(new RegExp(`(${operators.join('|')})`, 'gi'), (match) => {
+            return chalk.blue(match);
+        })
+
+        return highlightedText;
     }
 }
