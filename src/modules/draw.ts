@@ -1,4 +1,4 @@
-import { clear } from "./ct";
+import { clear } from "./tools.js";
 
 export function draw(content: any) {
     clear();

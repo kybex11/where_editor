@@ -1,13 +1,27 @@
-import { TempManager } from "./modules/tmpManager";
-const tempManager = new TempManager();
+import fs from 'fs';
 
-async function main() {
-  try {
-    const data = await tempManager.Get();
-    console.log(data);
-  } catch (e) {
-    console.error(e);
+const filePath = process.argv[2];
+
+function runEditorWithoutFile() {
+
+}
+
+function runEditorWithFile() {
+  
+}
+
+function checkFile() {
+  if (filePath) {
+    //const fileContent = fs.readFileSync(filePath, 'utf8');
+    //if (fileContent) {
+      //console.log(`File contents: ${fileContent}`);
+    //}
+    
+    runEditorWithFile();
+    
+  } else {
+    runEditorWithoutFile();
   }
 }
 
-main();
+checkFile();
