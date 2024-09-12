@@ -21,5 +21,14 @@ export class Highlight {
 
         return highlightedText;
         }
+
+        if (lang == "c") {
+            const operators = [ 'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else', 'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict', 'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned', 'void', 'volatile', 'while', 'sizeof', 'int', 'char', 'float', 'double', 'void', 'struct', 'union', 'enum', 'auto', 'extern', 'register', 'static','const', 'volatile', 'restrict', '//', '/* */', '#include', '#define'];
+            const highlightedText = content.replace(new RegExp(`(${operators.join('|')})`, 'gi'), (match) => {
+                return chalk.red(match);
+            })
+    
+            return highlightedText;
+        }
     }
 }
