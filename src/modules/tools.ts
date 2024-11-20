@@ -11,8 +11,12 @@ export function exitError(error: any) {
     process.exit();
 }
 
-export function centeredText(text: string): void {
-    clear();
+export function centeredText(text: string, clearing: boolean): void {
+    
+    if (clearing) {
+        clear();
+    }
+    
     process.stdout.write('\x1B[1;1f'); // Move cursor to top-left corner
 
     const terminalWidth = process.stdout.columns;
@@ -26,11 +30,37 @@ export function centeredText(text: string): void {
     process.stdout.write(text + '\n');
 }
 
-export function exitWithEsc() {
+export function bottomText(text: string, clearing: boolean): void {
+    if (clearing) {
+        clear();
+    }
+
+    process.stdout.write('\x1B[1;1f'); // Move cursor to top-left corner
+
+    const terminalWidth = process.stdout.columns;
+    const fullText = text.padEnd(terminalWidth, ' ');
+
+    const centerY = process.stdout.rows;
+    
+    process.stdout.write(`\x1B[44m\x1B[37m`); // blue bg, white text
+    process.stdout.write(`\x1B[${centerY};1f${fullText}`);
+    process.stdout.write('\x1B[0m\n'); // reset styles
+
+}
+
+export function exitEscapeHandler() {
     process.stdin.setRawMode(true);
     process.stdin.on('data', (data) => {
         if (data.toString() === '\u001B') { //esc key
+            clear();
             exit();
         }
     })
+}
+
+export function exitHandler() {
+   process.on('SIGINT', () => { //ctrl + c key
+    clear();
+    exit();
+   })
 }
