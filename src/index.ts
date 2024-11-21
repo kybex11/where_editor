@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { runEditorWithFile, runEditorWithoutFile } from './modules/editor.js';
-import { exitEscapeHandler, exitHandler } from './modules/tools.js';
+import { addFileBrowserHandler, exitEscapeHandler, exitHandler } from './modules/tools.js';
 import { Highlight } from './modules/highlight.js';
 
 const filePath = process.argv[2];
@@ -19,6 +19,7 @@ function checkFile() {
   } else {
     runEditorWithoutFile();
     exitEscapeHandler();
+    addFileBrowserHandler(true);
   }
 }
 
