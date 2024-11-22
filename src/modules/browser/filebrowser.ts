@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
+import * as readline from 'readline';
 
 export function GetFilesAndDirectories(dir: string) {
     try {
@@ -10,7 +11,6 @@ export function GetFilesAndDirectories(dir: string) {
         for (const item of items) {
             const fullPath = path.join(dir, item);
             const isDirectory = fs.statSync(fullPath).isDirectory();
-
             const emoji = isDirectory ? '📁' : '📄';
             result.push(`${emoji} ${item}`);
         }
@@ -25,14 +25,13 @@ export function GetFilesAndDirectories(dir: string) {
 export function FileBrowser() {
     const homeDir = os.homedir();
     const filesAndDirectories = GetFilesAndDirectories(homeDir);
-    console.log(`${homeDir}\n`);
+    console.log(`Contents of ${homeDir}:\n`);
 
     const columns = 3;
     const terminalWidth = process.stdout.columns || 80;
     const columnWidth = Math.floor(terminalWidth / columns);
-
     const rows = Math.ceil(filesAndDirectories.length / columns);
-    const output: string[][] = Array.from({ length: rows}, () => Array(columns).fill(''));
+    const output: string[][] = Array.from({ length: rows }, () => Array(columns).fill(''));
 
     for (let i = 0; i < filesAndDirectories.length; i++) {
         const columnIndex = i % columns;
@@ -40,8 +39,61 @@ export function FileBrowser() {
         output[rowIndex][columnIndex] = filesAndDirectories[i];
     }
 
-    output.forEach(row => {
-        console.log(row.map(item => item.padEnd(columnWidth)).join(''));
-    })
+    let selectedIndex = 0;
+    let selectedRow = 0;
+    let selectedColumn = 0;
+
+    const render = () => {
+        readline.cursorTo(process.stdout, 0, 0);
+        console.clear();
+        console.log(`Contents of ${homeDir}:\n`);
+
+        output.forEach((row) => {
+            console.log(row.map((item, index) => {
+                const currentIndex = row.indexOf(item) + (output.indexOf(row) * columns);
+                if (selectedRow === output.indexOf(row) && selectedColumn === index) {
+                    return `\x1b[44m${item.padEnd(columnWidth)}\x1b[0m`;
+                }
+                return item.padEnd(columnWidth);
+            }).join(''));
+        });
+    };
+
+    const handleInput = (data: Buffer) => {
+        switch (data.toString()) {
+            case '\u001B[A':
+                if (selectedRow > 0) {
+                    selectedRow--;
+                }
+                break;
+            case '\u001B[B':
+                if (selectedRow < rows - 1) {
+                    selectedRow++;
+                }
+                break;
+            case '\u001B[D':
+                if (selectedColumn > 0) {
+                    selectedColumn--;
+                }
+                break;
+            case '\u001B[C':
+                if (selectedColumn < columns - 1) {
+                    selectedColumn++;
+                }
+                break;
+            case '\r':
+                const selectedItemIndex = selectedRow * columns + selectedColumn;
+                console.log(`Selected: ${filesAndDirectories[selectedItemIndex]}`);
+                return process.exit(0);
+        }
+        selectedIndex = selectedRow * columns + selectedColumn;
+        render();
+    };
+
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
+    process.stdin.on('data', handleInput);
+
+    render();
 }
 
