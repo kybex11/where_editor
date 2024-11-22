@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import * as readline from 'readline';
+import { runEditorWithFile } from '../editor.js';
 
 export function GetFilesAndDirectories(dir: string) {
     try {
@@ -22,8 +23,8 @@ export function GetFilesAndDirectories(dir: string) {
     }
 }
 
-export function FileBrowser() {
-    const homeDir = os.homedir();
+export function FileBrowser(homeDir: string) {
+    //const homeDir = os.homedir();
     const filesAndDirectories = GetFilesAndDirectories(homeDir);
     console.log(`Contents of ${homeDir}:\n`);
 
@@ -84,6 +85,13 @@ export function FileBrowser() {
             case '\r':
                 const selectedItemIndex = selectedRow * columns + selectedColumn;
                 console.log(`Selected: ${filesAndDirectories[selectedItemIndex]}`);
+                const stat = fs.statSync(filesAndDirectories[selectedItemIndex]);
+
+                if (stat.isDirectory()) {
+                    FileBrowser(filesAndDirectories[selectedItemIndex]);
+                } else if (stat.isFile) {
+                    runEditorWithFile();
+                }
                 return process.exit(0);
         }
         selectedIndex = selectedRow * columns + selectedColumn;
@@ -95,5 +103,10 @@ export function FileBrowser() {
     process.stdin.on('data', handleInput);
 
     render();
+}
+
+export function FileBrowserRunHome() {
+    const homeDir = os.homedir();
+    FileBrowser(homeDir);
 }
 

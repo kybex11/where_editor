@@ -1,4 +1,4 @@
-import { FileBrowser } from "./browser/filebrowser.js";
+import { FileBrowser, FileBrowserRunHome } from "./browser/filebrowser.js";
 
 export function clear() {
     process.stdout.write('\x1B[2J');
@@ -74,7 +74,7 @@ export function addFileBrowserHandler(f: boolean) {
             if (data.toString() === 'f') {
                 process.stdin.setRawMode(false);
                 clear();
-                FileBrowser();
+                FileBrowserRunHome();
             }  
         }
     })
