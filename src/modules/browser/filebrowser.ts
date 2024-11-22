@@ -26,6 +26,22 @@ export function FileBrowser() {
     const homeDir = os.homedir();
     const filesAndDirectories = GetFilesAndDirectories(homeDir);
     console.log(`${homeDir}\n`);
-    console.log(filesAndDirectories.join('\n')); // format without '' and []
+
+    const columns = 3;
+    const terminalWidth = process.stdout.columns || 80;
+    const columnWidth = Math.floor(terminalWidth / columns);
+
+    const rows = Math.ceil(filesAndDirectories.length / columns);
+    const output: string[][] = Array.from({ length: rows}, () => Array(columns).fill(''));
+
+    for (let i = 0; i < filesAndDirectories.length; i++) {
+        const columnIndex = i % columns;
+        const rowIndex = Math.floor(i / columns);
+        output[rowIndex][columnIndex] = filesAndDirectories[i];
+    }
+
+    output.forEach(row => {
+        console.log(row.map(item => item.padEnd(columnWidth)).join(''));
+    })
 }
 
