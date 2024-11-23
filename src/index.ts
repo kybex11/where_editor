@@ -13,13 +13,13 @@ function checkFile() {
       //console.log(`File contents: ${fileContent}`);
     //}
 
-    runEditorWithFile();
+    runEditorWithFile(filePath);
     exitHandler();
     
   } else {
     runEditorWithoutFile();
     exitEscapeHandler();
-    addFileBrowserHandler(true);
+    addFileBrowserHandler(true, filePath);
   }
 }
 

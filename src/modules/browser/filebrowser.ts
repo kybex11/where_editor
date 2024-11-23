@@ -23,7 +23,7 @@ export function GetFilesAndDirectories(dir: string) {
     }
 }
 
-export function FileBrowser(homeDir: string) {
+export function FileBrowser(homeDir: string, filePath: string) {
     //const homeDir = os.homedir();
     const filesAndDirectories = GetFilesAndDirectories(homeDir);
     console.log(`Contents of ${homeDir}:\n`);
@@ -88,9 +88,9 @@ export function FileBrowser(homeDir: string) {
                 const stat = fs.statSync(filesAndDirectories[selectedItemIndex]);
 
                 if (stat.isDirectory()) {
-                    FileBrowser(filesAndDirectories[selectedItemIndex]);
+                    FileBrowser(filesAndDirectories[selectedItemIndex], filePath);
                 } else if (stat.isFile) {
-                    runEditorWithFile();
+                    runEditorWithFile(filePath);
                 }
                 return process.exit(0);
         }
@@ -105,8 +105,8 @@ export function FileBrowser(homeDir: string) {
     render();
 }
 
-export function FileBrowserRunHome() {
+export function FileBrowserRunHome(filePath: string) {
     const homeDir = os.homedir();
-    FileBrowser(homeDir);
+    FileBrowser(homeDir, filePath);
 }
 

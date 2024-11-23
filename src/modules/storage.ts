@@ -26,12 +26,7 @@ export class TempManager {
 
 async function appendTMP() {
     const filePath = path.join(os.homedir(), 'lsdneo.tmp');
-    console.log(`Attempting to append to file: ${filePath}`);
     try {
         await fs.promises.appendFile(filePath, '', 'utf-8');
-        console.log(`File created successfully: ${filePath}`);
-    } catch (e) {
-        console.error(`Error creating file: ${e}`);
-        console.log("Error: TMP Not Created. Restart Program");
-    }
+    } catch (e) {}
 }

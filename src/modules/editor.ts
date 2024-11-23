@@ -6,6 +6,6 @@ export function runEditorWithoutFile() {
     bottomText("ESC - Close  F - File Browser", false);
 }
 
-export function runEditorWithFile() {
-    printCodeWithLines();
+export function runEditorWithFile(filePath: string) {
+    printCodeWithLines(filePath);
 }

@@ -67,14 +67,14 @@ export function exitHandler() {
    })
 }
 
-export function addFileBrowserHandler(f: boolean) {
+export function addFileBrowserHandler(f: boolean, filePath: string) {
     process.stdin.setRawMode(true);
     process.stdin.on('data', (data) => {
         if (f) {
             if (data.toString() === 'f') {
                 process.stdin.setRawMode(false);
                 clear();
-                FileBrowserRunHome();
+                FileBrowserRunHome(filePath);
             }  
         }
     })
