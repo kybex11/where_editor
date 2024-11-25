@@ -5,10 +5,10 @@ import * as fs from 'fs';
 export async function printCodeWithLines(filePath: string) {
     const highlight = new Highlight();
     const fileContent = await Get();
+    
     if (filePath) {
         const data = fs.readFileSync(filePath, 'utf-8');
-        Write(data);
-        printCodeWithLines(filePath);
+        await Write(data);
     }
 
     const lines = fileContent.split('\n');
