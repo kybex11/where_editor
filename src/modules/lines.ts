@@ -1,19 +1,14 @@
 import { Highlight } from "./highlight.js";
-import { TempManager } from "./storage.js";
+import { Get, Write } from "./storage.js";
 import * as fs from 'fs';
 
 export async function printCodeWithLines(filePath: string) {
-    const tempManager = new TempManager();
     const highlight = new Highlight();
-    const fileContent = await tempManager.Get();
-    if (fileContent === null) {
-        if (filePath) {
-            const data = fs.readFileSync(filePath);
-            tempManager.Write(data);
-            printCodeWithLines(filePath);
-        } else {
-            console.error('Error: TMP not created');
-        }
+    const fileContent = await Get();
+    if (filePath) {
+        const data = fs.readFileSync(filePath, 'utf-8');
+        Write(data);
+        printCodeWithLines(filePath);
     }
 
     const lines = fileContent.split('\n');
