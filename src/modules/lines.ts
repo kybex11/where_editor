@@ -1,10 +1,13 @@
 import { Highlight } from "./highlight.js";
 import { Get, Write } from "./storage.js";
 import * as fs from 'fs';
+import { clear } from "./tools.js";
 
 export async function printCodeWithLines(filePath: string) {
     const highlight = new Highlight();
     const fileContent = await Get();
+
+    clear();
     
     if (filePath) {
         const data = fs.readFileSync(filePath, 'utf-8');
