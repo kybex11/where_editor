@@ -1,3 +1,5 @@
-export function keyHandler() {
-    
+function keyHandler() {
+    // hi 👋
 }
+
+export { keyHandler };
