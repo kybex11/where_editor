@@ -51,7 +51,6 @@ export function FileBrowser(homeDir: string, filePath: string) {
 
         output.forEach((row) => {
             console.log(row.map((item, index) => {
-                const currentIndex = row.indexOf(item) + (output.indexOf(row) * columns);
                 if (selectedRow === output.indexOf(row) && selectedColumn === index) {
                     return `\x1b[44m${item.padEnd(columnWidth)}\x1b[0m`;
                 }
@@ -87,7 +86,7 @@ export function FileBrowser(homeDir: string, filePath: string) {
                 console.log(`Selected: ${filesAndDirectories[selectedItemIndex]}`);
                 const stat = fs.statSync(filesAndDirectories[selectedItemIndex]);
 
-                if (stat.isDirectory()) {
+                if (stat.isDirectory()) { 
                     FileBrowser(filesAndDirectories[selectedItemIndex], filePath);
                 } else if (stat.isFile) {
                     runEditorWithFile(filePath);
