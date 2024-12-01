@@ -11,9 +11,7 @@ export function GetFilesAndDirectories(dir: string) {
 
         for (const item of items) {
             const fullPath = path.join(dir, item);
-            const isDirectory = fs.statSync(fullPath).isDirectory();
-            const emoji = isDirectory ? '📁' : '📄';
-            result.push(`${emoji} ${item}`);
+            result.push(fullPath);
         }
 
         return result;
@@ -24,15 +22,38 @@ export function GetFilesAndDirectories(dir: string) {
 }
 
 export function FileBrowser(homeDir: string, filePath: string) {
-    //const homeDir = os.homedir();
-    const filesAndDirectories = GetFilesAndDirectories(homeDir);
-    console.log(`Contents of ${homeDir}:\n`);
+    let currentLocation = homeDir;
+    let filesAndDirectories = GetFilesAndDirectories(currentLocation);
+    let rows: number;
+    let output: string[][];
+    
+    const updateCurrentDirectory = (newPath: string) => {
+        currentLocation = newPath;
+        filesAndDirectories = GetFilesAndDirectories(currentLocation);
+        
+        const columns = 3;
+        const terminalWidth = process.stdout.columns || 80;
+        const columnWidth = Math.floor(terminalWidth / columns);
+        rows = Math.ceil(filesAndDirectories.length / columns);
+        output = Array.from({ length: rows }, () => Array(columns).fill(''));
+
+        for (let i = 0; i < filesAndDirectories.length; i++) {
+            const columnIndex = i % columns;
+            const rowIndex = Math.floor(i / columns);
+            output[rowIndex][columnIndex] = filesAndDirectories[i];
+        }
+        
+        selectedIndex = 0;
+        selectedRow = 0;
+        selectedColumn = 0;
+        render();
+    };
 
     const columns = 3;
     const terminalWidth = process.stdout.columns || 80;
     const columnWidth = Math.floor(terminalWidth / columns);
-    const rows = Math.ceil(filesAndDirectories.length / columns);
-    const output: string[][] = Array.from({ length: rows }, () => Array(columns).fill(''));
+    rows = Math.ceil(filesAndDirectories.length / columns);
+    output = Array.from({ length: rows }, () => Array(columns).fill(''));
 
     for (let i = 0; i < filesAndDirectories.length; i++) {
         const columnIndex = i % columns;
@@ -47,14 +68,21 @@ export function FileBrowser(homeDir: string, filePath: string) {
     const render = () => {
         readline.cursorTo(process.stdout, 0, 0);
         console.clear();
-        console.log(`Contents of ${homeDir}:\n`);
+        console.log(`Contents of ${currentLocation}:\n`);
 
         output.forEach((row) => {
-            console.log(row.map((item, index) => {
+            console.log(row.map((fullPath, index) => {
+                if (!fullPath) return ''.padEnd(columnWidth);
+                
+                const isDirectory = fs.statSync(fullPath).isDirectory();
+                const emoji = isDirectory ? '📁' : '📄';
+                const basename = path.basename(fullPath);
+                const displayText = `${emoji} ${basename}`;
+
                 if (selectedRow === output.indexOf(row) && selectedColumn === index) {
-                    return `\x1b[44m${item.padEnd(columnWidth)}\x1b[0m`;
+                    return `\x1b[44m${displayText.padEnd(columnWidth)}\x1b[0m`;
                 }
-                return item.padEnd(columnWidth);
+                return displayText.padEnd(columnWidth);
             }).join(''));
         });
     };
@@ -67,7 +95,8 @@ export function FileBrowser(homeDir: string, filePath: string) {
                 }
                 break;
             case '\u001B[B':
-                if (selectedRow < rows - 1) {
+                if (selectedRow < rows - 1 && 
+                    (selectedRow * columns + selectedColumn) < filesAndDirectories.length) {
                     selectedRow++;
                 }
                 break;
@@ -83,15 +112,22 @@ export function FileBrowser(homeDir: string, filePath: string) {
                 break;
             case '\r':
                 const selectedItemIndex = selectedRow * columns + selectedColumn;
-                console.log(`Selected: ${filesAndDirectories[selectedItemIndex]}`);
-                const stat = fs.statSync(filesAndDirectories[selectedItemIndex]);
+                const selectedPath = filesAndDirectories[selectedItemIndex];
+                const stat = fs.statSync(selectedPath);
 
                 if (stat.isDirectory()) { 
-                    FileBrowser(filesAndDirectories[selectedItemIndex], filePath);
-                } else if (stat.isFile) {
+                    updateCurrentDirectory(selectedPath);
+                } else if (stat.isFile()) {
                     runEditorWithFile(filePath);
+                    return process.exit(0);
                 }
-                return process.exit(0);
+                break;
+            case '\u001b':
+                const parentDir = path.dirname(currentLocation);
+                if (parentDir !== currentLocation) {
+                    updateCurrentDirectory(parentDir);
+                }
+                break;
         }
         selectedIndex = selectedRow * columns + selectedColumn;
         render();
