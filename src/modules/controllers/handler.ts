@@ -6,7 +6,7 @@ export function keyHandler() {
     process.stdin.on('data', (key) => {
         const keyStr = key.toString();
         if (keyStr !== '\u0003' && keyStr !== 'esc') {
-            
+            return keyStr;
         }
     })
 }

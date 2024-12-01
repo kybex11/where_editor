@@ -119,7 +119,6 @@ export function FileBrowser(homeDir: string, filePath: string) {
                     updateCurrentDirectory(selectedPath);
                 } else if (stat.isFile()) {
                     runEditorWithFile(filePath);
-                    return process.exit(0);
                 }
                 break;
             case '\u001b':
@@ -138,6 +137,8 @@ export function FileBrowser(homeDir: string, filePath: string) {
     process.stdin.on('data', handleInput);
 
     render();
+
+    
 }
 
 export function FileBrowserRunHome(filePath: string) {

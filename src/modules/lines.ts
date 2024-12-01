@@ -3,7 +3,6 @@ import { Get, Write } from "./storage.js";
 import * as fs from 'fs';
 import { clear } from "./tools.js";
 import { keyHandler } from "./controllers/handler.js";
-import { join } from "path";
 
 export async function printCodeWithLines(filePath: string) {
     let language = '';
@@ -39,6 +38,6 @@ export async function printCodeWithLines(filePath: string) {
         
     }
 
-    keyHandler();
+    ///keyHandler(); add logic with this line
     
 }
