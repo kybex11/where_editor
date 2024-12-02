@@ -4,8 +4,10 @@ import * as fs from 'fs';
 import { clear } from "./tools.js";
 import { keyHandler } from "./controllers/handler.js";
 
+let language: string = '';
+
 export async function printCodeWithLines(filePath: string) {
-    let language = '';
+    
 
     const highlight = new Highlight();
     const fileContent = await Get();
@@ -19,12 +21,14 @@ export async function printCodeWithLines(filePath: string) {
         } catch(err) {}      
     }
 
-    const lines = fileContent.split('\n');
+    const lines = fileContent.split('\n'); 
 
     if (filePath.endsWith('.ts')) {
         language = 'ts';
     } else if (filePath.endsWith('.c')) {
         language = 'c';
+    } else {
+        language = "plaintext";
     }
 
     for (let i = 0; i < lines.length; i++) {
@@ -32,7 +36,7 @@ export async function printCodeWithLines(filePath: string) {
         if (language == "ts" || language == "c") {
             const hig1 = highlight.HighlightCode(lines[i], language);
             console.log(`${i + 1}.  ${hig1}`);
-        } else {
+        } else if (language == "plaintext") {
             console.log(`${i + 1}. ${lines[i]}`);
         }
         
@@ -40,4 +44,8 @@ export async function printCodeWithLines(filePath: string) {
 
     ///keyHandler(); add logic with this line
     
+}
+
+export function getLanguage(): string {
+    return language;
 }

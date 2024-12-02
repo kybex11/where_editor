@@ -5,12 +5,18 @@ import { Highlight } from './modules/highlight.js';
 
 const filePath = process.argv[2];
 
-
 function checkFile() {
   if (filePath) {
-    runEditorWithFile(filePath);
-    exitHandler();
-    
+    const stat = fs.statSync(filePath);
+
+    if (stat.isFile) {
+      runEditorWithFile(filePath);
+      exitHandler();
+    } else {
+      runEditorWithoutFile();
+      exitEscapeHandler();
+      addFileBrowserHandler(true, filePath);
+    }
   } else {
     runEditorWithoutFile();
     exitEscapeHandler();

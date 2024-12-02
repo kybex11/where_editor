@@ -118,7 +118,7 @@ export function FileBrowser(homeDir: string, filePath: string) {
                 if (stat.isDirectory()) { 
                     updateCurrentDirectory(selectedPath);
                 } else if (stat.isFile()) {
-                    runEditorWithFile(filePath);
+                    runEditorWithFile(currentLocation);
                 }
                 break;
             case '\u001b':
