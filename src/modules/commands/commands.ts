@@ -9,32 +9,33 @@ export function checkCommand(command: string): boolean {
             return true;
         }
     }
-    
-    if (command === 'r') {
-        const launchArgs = getArgs(getLanguage());
-        return true;
-    } else if (command === 'f') {
-        // new file in currently opened directory in file browser
-        return true;
-    } else if (command === 'd') {
-        //new directory in currently opened directory in file browser
-        return true;
-    } else if (command === 'h') {
-        // toggle code highlight
-        return true;
-    } else if (command === 'rd') {
-        // run current workspace
-        return true;
-    } else if (command === 'el') {
-        // remove currently opened directory
-        return true;
-    } else if (command === 'ee') {
-        // remove currently opened file
-        return true;
+
+    switch(command) {
+        case 'r':
+            // run current file
+            const launchArgs = getArgs(getLanguage());
+            return true;
+        case 'f':
+            // new file in currently opened directory in file browser
+            return true;
+        case 'd':
+            // new directory in currently opened directory in file browser
+            return true;
+        case 'h':
+            // toggle code highlight
+            return true;
+        case 'rd':
+            // run current workspace
+            return true;
+        case 'el':
+            // remove currently opened directory
+            return true;
+        case 'ee':
+            // remove currently opened file
+            return true;
+        default:
+            return false;
     }
-
-    return false;
-
 }
 
 //! - run a terminal command

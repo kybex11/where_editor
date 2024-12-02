@@ -1,7 +1,9 @@
 const languageArgs: { [key: string]: string } = {
     python: "python",
     ts: "ts-node", 
-    js: "node"
+    js: "node",
+
+    vite: "npm run dev"
 };
 
 export function changeArgs(args: string, lang: string): boolean {
