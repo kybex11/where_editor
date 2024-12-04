@@ -1,7 +1,9 @@
 const languageArgs: { [key: string]: string } = {
-    python: "python",
+    py: "python",
     ts: "ts-node", 
     js: "node",
+    go: "go run",
+    rs: "cargo run",
 
     vite: "npm run dev"
 };

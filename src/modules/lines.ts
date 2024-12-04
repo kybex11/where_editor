@@ -2,7 +2,7 @@ import { Highlight } from "./highlight.js";
 import { Get, Write } from "./storage.js";
 import * as fs from 'fs';
 import { clear } from "./tools.js";
-import { keyHandler } from "./controllers/handler.js";
+import { keyHandler } from "./handler/handler.js";
 
 let language: string = '';
 
