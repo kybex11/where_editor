@@ -2,11 +2,7 @@ import fs from 'fs';
 import { runEditorWithFile, runEditorWithoutFile } from './modules/editor.js';
 import { addFileBrowserHandler, exitEscapeHandler, exitHandler } from './modules/tools.js';
 import { Highlight } from './modules/highlight.js';
-import { handle } from './modules/plugins/plugins.js';
-
 const filePath = process.argv[2];
-
-handle();
 
 function checkFile() {
   if (filePath) {

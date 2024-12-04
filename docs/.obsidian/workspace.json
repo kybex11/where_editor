@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "task.md",
+                "file": "commands/Commands Guide.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "task"
+              "title": "Commands Guide"
             }
           }
         ]
@@ -164,7 +164,8 @@
   },
   "active": "e0ada977e18ea7bf",
   "lastOpenFiles": [
-    "Untitled",
-    "task.md"
+    "task.md",
+    "commands/Commands Guide.md",
+    "commands"
   ]
 }

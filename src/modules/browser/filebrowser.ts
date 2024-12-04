@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as readline from 'readline';
 import { runEditorWithFile } from '../editor.js';
+import { updateFileBrowserDirectory } from '../commands/commands.js';
 
 export function GetFilesAndDirectories(dir: string) {
     try {
@@ -22,12 +23,14 @@ export function GetFilesAndDirectories(dir: string) {
 }
 
 export function FileBrowser(homeDir: string, filePath: string) {
-    let currentLocation = homeDir;
+    let currentLocation = homeDir
     let filesAndDirectories = GetFilesAndDirectories(currentLocation);
     let rows: number;
     let output: string[][];
+    updateFileBrowserDirectory(homeDir);
     
     const updateCurrentDirectory = (newPath: string) => {
+        updateFileBrowserDirectory(newPath);
         currentLocation = newPath;
         filesAndDirectories = GetFilesAndDirectories(currentLocation);
         

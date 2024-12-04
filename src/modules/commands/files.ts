@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 
-class File {
+export class FileSystem {
     async create(directory: string, fileName: string) {
         try {
             fs.appendFileSync(`${directory}/${fileName}`, '');
@@ -18,7 +18,7 @@ class File {
     }
 }
 
-class Directory {
+export class DirectorySystem {
     async create(path: string) {
         try {
             fs.mkdirSync(path);
