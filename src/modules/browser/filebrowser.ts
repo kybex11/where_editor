@@ -35,8 +35,6 @@ export function FileBrowser(homeDir: string, filePath: string) {
         filesAndDirectories = GetFilesAndDirectories(currentLocation);
         
         const columns = 3;
-        const terminalWidth = process.stdout.columns || 80;
-        const columnWidth = Math.floor(terminalWidth / columns);
         rows = Math.ceil(filesAndDirectories.length / columns);
         output = Array.from({ length: rows }, () => Array(columns).fill(''));
 
@@ -71,7 +69,7 @@ export function FileBrowser(homeDir: string, filePath: string) {
     const render = () => {
         readline.cursorTo(process.stdout, 0, 0);
         console.clear();
-        console.log(`Contents of ${currentLocation}:\n`);
+        console.log(`Contents of ${currentLocation}: \n`);
 
         output.forEach((row) => {
             console.log(row.map((fullPath, index) => {
@@ -139,13 +137,10 @@ export function FileBrowser(homeDir: string, filePath: string) {
     process.stdin.resume();
     process.stdin.on('data', handleInput);
 
-    render();
-
-    
+    render();   
 }
 
 export function FileBrowserRunHome(filePath: string) {
     const homeDir = os.homedir();
     FileBrowser(homeDir, filePath);
 }
-

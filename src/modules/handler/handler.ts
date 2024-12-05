@@ -8,10 +8,10 @@ export function keyHandler(): string {
         if (keyStr !== '\u0003' && keyStr !== 'esc') {
             return keyStr;
         } else {
-            return 'w';
+            return 'weight';
         }
-        return 'w';
+        return 'weight';
     })
     
-    return 'w';
+    return 'weight';
 }

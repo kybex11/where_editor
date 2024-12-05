@@ -5,7 +5,7 @@ import { Highlight } from './modules/highlight.js';
 const filePath = process.argv[2];
 
 async function checkFile() {
-  let stat;
+  let stat: fs.Stats;
 
   if (!filePath.startsWith('-')) {
     if (filePath) {

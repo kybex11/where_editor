@@ -45,10 +45,22 @@ export async function printCodeWithLines(filePath: string) {
 
     function updateCycle() {
         const key = keyHandler();
-        
+
         setTimeout(() => {
-            if (key !== 'w') {
-            
+            if (key !== 'weight') {
+               if (key == '\u001B[A') {
+                line++;
+                //up
+               } else if (key == '\u001B[B') {
+                line--;
+                //down
+               } else if (key == '\u001B[D') {
+                index--;
+                //left
+               } else if (key == '\u001B[C') {
+                index++;
+                //left
+               }
             }
             updateCycle();
         }, 10);
