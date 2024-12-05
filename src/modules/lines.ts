@@ -7,10 +7,11 @@ import { keyHandler } from "./handler/handler.js";
 let language: string = '';
 
 export async function printCodeWithLines(filePath: string) {
-    
-
     const highlight = new Highlight();
     const fileContent = await Get();
+
+    let line = 1;
+    let index = 1;
 
     clear();
     
@@ -42,8 +43,17 @@ export async function printCodeWithLines(filePath: string) {
         
     }
 
-    ///keyHandler(); add logic with this line
-    
+    function updateCycle() {
+        const key = keyHandler();
+        
+        setTimeout(() => {
+            if (key !== 'w') {
+            
+            }
+            updateCycle();
+        }, 10);
+    }
+    updateCycle();  
 }
 
 export function getLanguage(): string {

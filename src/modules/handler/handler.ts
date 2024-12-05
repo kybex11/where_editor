@@ -1,4 +1,4 @@
-export function keyHandler() {
+export function keyHandler(): string {
     process.stdin.setRawMode(true);
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
@@ -7,6 +7,11 @@ export function keyHandler() {
         const keyStr = key.toString();
         if (keyStr !== '\u0003' && keyStr !== 'esc') {
             return keyStr;
+        } else {
+            return 'w';
         }
+        return 'w';
     })
+    
+    return 'w';
 }

@@ -4,22 +4,31 @@ import { addFileBrowserHandler, exitEscapeHandler, exitHandler } from './modules
 import { Highlight } from './modules/highlight.js';
 const filePath = process.argv[2];
 
-function checkFile() {
-  if (filePath) {
-    const stat = fs.statSync(filePath);
+async function checkFile() {
+  let stat;
 
-    if (stat.isFile) {
-      runEditorWithFile(filePath);
-      exitHandler();
+  if (!filePath.startsWith('-')) {
+    if (filePath) {
+      try {
+        stat = fs.statSync(filePath);
+        if (stat.isFile) {
+          runEditorWithFile(filePath);
+          exitHandler();
+        } else {
+          runEditorWithoutFile();
+          exitEscapeHandler();
+          addFileBrowserHandler(true, filePath);
+        }
+      } catch (err) { }
+
+
     } else {
       runEditorWithoutFile();
       exitEscapeHandler();
       addFileBrowserHandler(true, filePath);
     }
   } else {
-    runEditorWithoutFile();
-    exitEscapeHandler();
-    addFileBrowserHandler(true, filePath);
+    process.exit();
   }
 }
 
@@ -28,7 +37,7 @@ checkFile();
 const highlight = new Highlight();
 
 function testHighlight() {
-console.log(highlight.HighlightCode(`
+  console.log(highlight.HighlightCode(`
   import * as fs from 'fs';
 
   function main() {
