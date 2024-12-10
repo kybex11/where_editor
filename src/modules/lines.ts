@@ -5,14 +5,10 @@ import { clear } from "./tools.js";
 import { keyHandler } from "./handler/handler.js";
 
 let language: string = '';
+let line: number = 1;
+let index: number = 1;
 
 export async function printCodeWithLines(filePath: string) {
-    const highlight = new Highlight();
-    const fileContent = await Get();
-
-    let line = 1;
-    let index = 1;
-
     clear();
     
     if (filePath) {
@@ -22,8 +18,6 @@ export async function printCodeWithLines(filePath: string) {
         } catch(err) {}      
     }
 
-    const lines = fileContent.split('\n'); 
-
     if (filePath.endsWith('.ts')) {
         language = 'ts';
     } else if (filePath.endsWith('.c')) {
@@ -31,41 +25,71 @@ export async function printCodeWithLines(filePath: string) {
     } else {
         language = "plaintext";
     }
+    
+    updateCycle();
+}
 
-    for (let i = 0; i < lines.length; i++) {
-
-        if (language == "ts" || language == "c") {
-            const hig1 = highlight.HighlightCode(lines[i], language);
-            console.log(`${i + 1}.  ${hig1}`);
-        } else if (language == "plaintext") {
-            console.log(`${i + 1}. ${lines[i]}`);
-        }
-        
-    }
-
-    function updateCycle() {
+async function updateCycle() {
         const key = keyHandler();
+        const fileContent = await Get();
+        const highlight = new Highlight();
+        const lines = fileContent.split('\n'); 
 
         setTimeout(() => {
+            clear();
+
             if (key !== 'weight') {
                if (key == '\u001B[A') {
-                line++;
+                const val = line + 1 ;
+                if (val !> lines.length) {
+                    line++;
+                }
                 //up
                } else if (key == '\u001B[B') {
-                line--;
+                const val = line - 1;
+                if (val < 1) {
+                    line = 1;
+                } else {
+                    line--;
+                }
+
                 //down
                } else if (key == '\u001B[D') {
-                index--;
+                
+                const newIndex = index - 1;
+
+                if (newIndex <= 1) {
+                    index = 1;
+                } else {
+                    index--;
+                }
                 //left
                } else if (key == '\u001B[C') {
-                index++;
-                //left
+                const len = lines[line - 1].length;
+                const newIndex = index + 1;
+                if (newIndex >= len) {
+                    index = len;
+                } else {
+                   index++; 
+                }
+                
+                //right
+               } else if (key == '\u0008') {
+                //backspace
+                index--;
                }
+            }
+            
+            for (let i = 0; i < lines.length; i++) {
+                if (language == "ts" || language == "c") {
+                    const hig1 = highlight.HighlightCode(lines[i], language);
+                    console.log(`${i + 1}.  ${hig1}`);
+                } else if (language == "plaintext") {
+                    console.log(`${i + 1}. ${lines[i]}`);
+                }
             }
             updateCycle();
         }, 10);
-    }
-    updateCycle();  
 }
 
 export function getLanguage(): string {

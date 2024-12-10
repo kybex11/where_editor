@@ -7,8 +7,11 @@ export function keyHandler(): string {
         const keyStr = key.toString();
         if (keyStr !== '\u0003' && keyStr !== 'esc') {
             return keyStr;
-        } else {
+        } else if (keyStr == 'esc') {
             return 'weight';
+        } else if (keyStr == '\u0003') {
+            process.stdin.setRawMode(false);
+            process.exit();
         }
         return 'weight';
     })
