@@ -15,81 +15,65 @@ export async function printCodeWithLines(filePath: string) {
         try {
             const data = fs.readFileSync(filePath, 'utf-8');
             await Write(data);
-        } catch(err) {}      
+        } catch(err) {
+            console.error("Error reading file:", err);
+        }      
     }
 
-    if (filePath.endsWith('.ts')) {
-        language = 'ts';
-    } else if (filePath.endsWith('.c')) {
-        language = 'c';
-    } else {
-        language = "plaintext";
-    }
-    
+    language = determineLanguage(filePath);
     updateCycle();
 }
 
+function determineLanguage(filePath: string): string {
+    if (filePath.endsWith('.ts')) return 'ts';
+    if (filePath.endsWith('.c')) return 'c';
+    return "plaintext";
+}
+
 async function updateCycle() {
-        const key = keyHandler();
-        const fileContent = await Get();
-        const highlight = new Highlight();
-        const lines = fileContent.split('\n'); 
+    const key = keyHandler();
+    const fileContent = await Get();
+    const highlight = new Highlight();
+    const lines = fileContent.split('\n'); 
 
-        setTimeout(() => {
-            clear();
+    setTimeout(() => {
+        clear();
+        handleKeyPress(key, lines);
+        displayLines(lines, highlight);
+        updateCycle();
+    }, 10);
+}
 
-            if (key !== 'weight') {
-               if (key == '\u001B[A') {
-                const val = line + 1 ;
-                if (val !> lines.length) {
-                    line++;
-                }
-                //up
-               } else if (key == '\u001B[B') {
-                const val = line - 1;
-                if (val < 1) {
-                    line = 1;
-                } else {
-                    line--;
-                }
+function handleKeyPress(key: string, lines: string[]) {
+    if (key === 'weight') return;
 
-                //down
-               } else if (key == '\u001B[D') {
-                
-                const newIndex = index - 1;
+    switch (key) {
+        case '\u001B[A': // up
+            if (line < lines.length) line++;
+            break;
+        case '\u001B[B': // down
+            if (line > 1) line--;
+            break;
+        case '\u001B[D': // left
+            if (index > 1) index--;
+            break;
+        case '\u001B[C': // right
+            const len = lines[line - 1].length;
+            if (index < len) index++;
+            break;
+        case '\u0008': // backspace
+            index--;
+            break;
+    }
+}
 
-                if (newIndex <= 1) {
-                    index = 1;
-                } else {
-                    index--;
-                }
-                //left
-               } else if (key == '\u001B[C') {
-                const len = lines[line - 1].length;
-                const newIndex = index + 1;
-                if (newIndex >= len) {
-                    index = len;
-                } else {
-                   index++; 
-                }
-                
-                //right
-               } else if (key == '\u0008') {
-                //backspace
-                index--;
-               }
-            }
-            
-            for (let i = 0; i < lines.length; i++) {
-                if (language == "ts" || language == "c") {
-                    const hig1 = highlight.HighlightCode(lines[i], language);
-                    console.log(`${i + 1}.  ${hig1}`);
-                } else if (language == "plaintext") {
-                    console.log(`${i + 1}. ${lines[i]}`);
-                }
-            }
-            updateCycle();
-        }, 10);
+function displayLines(lines: string[], highlight: Highlight) {
+    for (let i = 0; i < lines.length; i++) {
+        const formattedLine = (language === "ts" || language === "c") 
+            ? highlight.HighlightCode(lines[i], language) 
+            : lines[i];
+        console.log(`${i + 1}. ${formattedLine}`);
+    }
 }
 
 export function getLanguage(): string {

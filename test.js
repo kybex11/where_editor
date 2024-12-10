@@ -1,9 +1,9 @@
-let number;
-
-number = 1;
+let number = 100;
 
 function main() {
-    console.log("number");
+    for (const i = 0; i < number; i++) {
+        console.log(i);
+    }
 }
 
 main();
