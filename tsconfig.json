@@ -4,6 +4,8 @@
     "outDir": "dist",
     "module": "NodeNext",
     "target": "ES2017",
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }

@@ -67,6 +67,10 @@ function handleKeyPress(key: string, lines: string[]) {
     }
 }
 
+function removeSymbol(index: number, line: any) {
+    
+}
+
 function displayLines(lines: string[], highlight: Highlight) {
     for (let i = 0; i < lines.length; i++) {
         const formattedLine = (language === "ts" || language === "c") 
