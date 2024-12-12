@@ -1,11 +1,17 @@
+import { Translate } from "./languages/translate.js";
 import { printCodeWithLines } from "./lines.js";
 import { Write } from "./storage.js";
 import { bottomText, centeredText } from "./tools.js";
 import * as fs from 'fs';
 
-export function runEditorWithoutFile() {
-    centeredText("No files opened currently...", true);
-    bottomText("ESC - Close  F - File Browser", false);
+export async function runEditorWithoutFile() {
+    const translate = new Translate();
+
+    const nfocTranslation = await translate.getTranslate('nfoc');
+    centeredText(nfocTranslation, true);
+
+    const ecffbTranslation = await translate.getTranslate('ecffb');
+    bottomText(ecffbTranslation, false);
 }
 
 export async function runEditorWithFile(filePath: string) {

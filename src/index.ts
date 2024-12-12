@@ -6,9 +6,8 @@ const filePath = process.argv[2];
 
 async function checkFile() {
   let stat: fs.Stats;
-
-  if (!filePath.startsWith('-')) {
-    if (filePath) {
+  if (filePath) {
+    if (!filePath.startsWith('-')) {
       try {
         stat = fs.statSync(filePath);
         if (stat.isFile) {
@@ -20,15 +19,13 @@ async function checkFile() {
           addFileBrowserHandler(true, filePath);
         }
       } catch (err) { }
-
-
     } else {
-      runEditorWithoutFile();
-      exitEscapeHandler();
-      addFileBrowserHandler(true, filePath);
+      
     }
   } else {
-    process.exit();
+    runEditorWithoutFile();
+    exitEscapeHandler();
+    addFileBrowserHandler(true, filePath);
   }
 }
 

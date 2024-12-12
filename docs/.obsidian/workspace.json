@@ -52,7 +52,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:#Command",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -73,7 +73,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -162,7 +163,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "e0ada977e18ea7bf",
+  "active": "15671d8b6659f9cc",
   "lastOpenFiles": [
     "task.md",
     "commands/Commands Guide.md",
