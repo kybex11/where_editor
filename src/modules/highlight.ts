@@ -13,7 +13,7 @@ export class Highlight {
         return highlightedText;
     }
     HighlightCode(content: any, lang: string) {
-        if (lang == "ts" || lang == "js") {
+        if (lang == "ts") {
         const operators = ['let', 'const', 'var', 'function', 'delete', 'void', 'public', 'private', 'async', 'await', 'class', 'type', 'interface', 'enum', 'module', 'import', 'export', 'default', 'as', 'break', 'case', 'switch', 'catch', 'continue', 'declare', 'do', 'else', 'if', 'for', 'while', 'extends', 'false', 'finally', 'from', 'get', 'global', 'instanceof', 'new', 'null', 'object', 'if', 'protected', 'readonly', 'require', 'return', 'string', 'super', 'this', 'throw', 'true', 'try', 'type', 'typeof','yield' ];
 
         const highlightedText = content.replace(new RegExp(`(${operators.join('|')})`, 'gi'), (match) => {

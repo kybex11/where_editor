@@ -1,10 +1,12 @@
 {
-  "name": "lsdneo",
+  "name": "editor",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "tsc && node --experimental-json-modules ./dist/index.js"
+    "start": "npx tsc && node --experimental-json-modules ./dist/index.js",
+    "build": "npx tsc",
+    "nexe": "npx nexe ./dist/index.js --build"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,7 @@
     "chalk": "^5.3.0"
   },
   "dependencies": {
+    "@angablue/exe": "^3.2.4",
     "tty": "^1.0.1"
   }
 }
