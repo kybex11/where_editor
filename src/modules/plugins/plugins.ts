@@ -9,6 +9,4 @@ export function deletePlugin() {}
 export function loadPlugins() {
     
 }
-export function togglePluginsStatus() {
-    pluginsEnabled = ( pluginsEnabled === true ) ? false : true;
-}
+export function togglePluginsStatus() { pluginsEnabled = !pluginsEnabled };
