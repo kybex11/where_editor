@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@angablue/exe": "^3.2.4",
-    "tty": "^1.0.1"
+    "tty": "^1.0.1",
+    "typescript": "^5.8.3"
   }
 }

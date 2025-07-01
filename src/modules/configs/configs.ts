@@ -1,3 +1,5 @@
+const installationPath = "C:\\WhereEditor\\";
+
 const languageArgs: { [key: string]: string } = {
     py: "python",
     ts: "ts-node", 

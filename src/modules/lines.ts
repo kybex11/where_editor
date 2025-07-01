@@ -36,12 +36,12 @@ async function updateCycle() {
     const highlight = new Highlight();
     const lines = fileContent.split('\n'); 
 
-    setTimeout(() => {
-        clear();
-        handleKeyPress(key, lines);
-        displayLines(lines, highlight);
-        updateCycle();
-    }, 10);
+    // Render lines only once
+    clear();
+    displayLines(lines, highlight);
+    
+    // Handle key press for navigation
+    handleKeyPress(key, lines);
 }
 
 function handleKeyPress(key: string, lines: string[]) {
